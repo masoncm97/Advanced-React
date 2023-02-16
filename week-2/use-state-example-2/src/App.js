@@ -31,26 +31,38 @@ function GoalForm(props) {
 }
 
 function ListOfGoals(props) {
-  console.log(props.allGoals)
+
+  function deleteGoal(goal) {
+    props.onDelete(goal);
+  }
+
   return (
     <ul>
       {props.allGoals.map((g) => (
         <li key={g.goal}>
           <span>My goal is to {g.goal} by {g.by}</span>
+          <button onClick={() => deleteGoal(g)}>Delete</button>
         </li>
       ))}
     </ul>
   )
 }
+
 function App() {
   const [allGoals, updateAllGoals] = useState([])
 
-  function addGoal(goal) { updateAllGoals([...allGoals, goal])}
+  function addGoal(goal) { 
+    updateAllGoals([...allGoals, goal]);
+  }
+
+  function deleteGoal(goal) {
+    updateAllGoals(allGoals.filter(g => g !== goal));
+  }
 
   return (
     <div className="App">
       <GoalForm onAdd={addGoal} />
-      <ListOfGoals allGoals={allGoals} />
+      <ListOfGoals allGoals={allGoals} onDelete={deleteGoal} />
     </div>
   );
 }
